@@ -90,7 +90,11 @@ class TestDeformer(OpenMayaMPx.MPxDeformerNode):
         # input_geom = OpenMayaMPx.cvar.MPxGeometryFilter_inputGeom
         input_geom = self.getDeformerInputGeometry(data_block, multi_index)
         mfn_mesh = OpenMaya.MFnMesh(input_geom)
-        envelope = OpenMayaMPx.cvar.MPxGeometryFilter_envelope
+        
+        envelopeAttr = OpenMayaMPx.cvar.MPxGeometryFilter_envelope
+        handle = data_block.inputValue(envelopeAttr)
+        envelope = handle.asFloat()
+        
 
         # 変形処理
         while not geometry_iter.isDone():
