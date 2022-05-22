@@ -1,6 +1,9 @@
 #! python
 # coding:utf-8
-"""カスタムノードサンプル"""
+"""カスタムノードサンプル
+
+入力アトリビュートを出力アトリビュートに流すだけ
+"""
 
 import sys
 import traceback
@@ -15,7 +18,7 @@ def maya_useNewAPI():
 
 class TestNode(om.MPxNode):
     """コマンドクラス"""
-    name = "TestNode"
+    name = "testNode"
     id = om.MTypeId(0x10001)  # プライベート ID は 0x00000 ～ 0x7ffff
     classify = "utility/general"
 
@@ -85,6 +88,24 @@ class TestNode(om.MPxNode):
         attr.indexMatters = False
         attr.addChild(TestNode.attr_child1)
         attr.addChild(TestNode.attr_child2)
+
+        # メッセージ
+        fn_attr = om.MFnMessageAttribute()
+        TestNode.src_mesh_attr = fn_attr.create("in_message", "im")
+        fn_attr.writable =  True 
+        fn_attr.readable = False 
+        fn_attr.storable =  True 
+        fn_attr.hidden = False 
+        TestNode.addAttribute(TestNode.src_mesh_attr)
+
+        fn_attr = om.MFnMessageAttribute()
+        TestNode.dst_mesh_attr = fn_attr.create("out_message", "om")
+        fn_attr.writable =  True 
+        fn_attr.readable = False 
+        fn_attr.storable =  True 
+        fn_attr.hidden = False 
+        TestNode.addAttribute(TestNode.dst_mesh_attr)
+
 
         # 出力アトリビュート
         attr = om.MFnNumericAttribute()
